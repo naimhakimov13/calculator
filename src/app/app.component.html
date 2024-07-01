@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Калькулятор
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-input
+    label-placement="floating"
+    label="Квадрат (м2)"
+    fill="outline"
+    [(ngModel)]="requiredArea"
+    type="number"
+    (ionChange)="calculatePackages()"/>
+  <br>
+  <ion-input
+    label-placement="floating"
+    label="Длина (м)"
+    fill="outline"
+    [(ngModel)]="length"
+    type="number"
+    (ionChange)="calculatePackages()"/>
+
+  <div class="hint-list">
+    @for (hint of hintLengths;track hint) {
+      <span (click)="length=hint">{{ hint }}</span>
+    }
+  </div>
+  <br>
+  <ion-input
+    label-placement="floating"
+    label="Ширина (см)"
+    fill="outline"
+    [(ngModel)]="width"
+    type="number"
+    (ionChange)="calculatePackages()"/>
+  <br>
+  <ion-input
+    label-placement="floating"
+    label="Количество в упаковке"
+    fill="outline"
+    [(ngModel)]="piecesPerPackage"
+    type="number"
+    (ionChange)="calculatePackages()"/>
+  <br>
+  <ion-item>
+    <ion-label>Пакеты</ion-label>
+    <ion-note slot="end">{{ packagesNeeded }}</ion-note>
+  </ion-item>
+  <ion-item>
+    <ion-label>Осталось (шт)</ion-label>
+    <ion-note slot="end">{{ remainingFloorboards }}</ion-note>
+  </ion-item>
+</ion-content>
