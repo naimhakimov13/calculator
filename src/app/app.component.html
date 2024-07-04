@@ -1,56 +1,122 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Калькулятор
-    </ion-title>
+    <ion-segment (ionChange)="typeChange($event.detail.value)" [value]="type">
+      <ion-segment-button value="square">
+        <ion-label>Квадрат</ion-label>
+      </ion-segment-button>
+      <ion-segment-button disabled value="cube">
+        <ion-label>Куб</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-input
-    label-placement="floating"
-    label="Квадрат (м2)"
-    fill="outline"
-    [(ngModel)]="requiredArea"
-    type="number"
-    (ionChange)="calculatePackages()"/>
+  <div class="item">
+    <ion-input
+      label-placement="floating"
+      [label]="type === sortType.cube ? 'Куб' : 'Квадрат'"
+      fill="outline"
+      [(ngModel)]="requiredArea"
+      type="number"
+      (ngModelChange)="calculatePackages()"/>
+    <ion-button (click)="requiredArea = 0; calculatePackages()" color="danger">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+
   <br>
-  <ion-input
-    label-placement="floating"
-    label="Длина (м)"
-    fill="outline"
-    [(ngModel)]="length"
-    type="number"
-    (ionChange)="calculatePackages()"/>
+
+  <div class="item">
+    <ion-input
+      label-placement="floating"
+      label="Длина (м)"
+      fill="outline"
+      [ngModel]="length"
+      type="number"
+      (ngModelChange)="calculatePackages()"/>
+
+    <ion-button (click)="length = 4; calculatePackages()"  color="danger">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
 
   <div class="hint-list">
-    @for (hint of hintLengths;track hint) {
-      <span (click)="length=hint">{{ hint }}</span>
+    @for (hint of hintLengths; track hint) {
+    <span (click)="length=hint; calculatePackages()">{{ hint }} м</span>
     }
   </div>
   <br>
+
+  <div class="item">
   <ion-input
     label-placement="floating"
     label="Ширина (см)"
+    [min]="1"
     fill="outline"
     [(ngModel)]="width"
     type="number"
-    (ionChange)="calculatePackages()"/>
+    (ngModelChange)="calculatePackages()"/>
+
+  <ion-button (click)="width = 12; calculatePackages()"  color="danger">
+    <ion-icon name="close-outline"></ion-icon>
+  </ion-button>
+  </div>
+  <div class="hint-list">
+    @for (hint of hintWidths; track hint) {
+    <span (click)="width=hint; calculatePackages()">{{ hint }} см</span>
+    }
+  </div>
   <br>
+
+  @if (type === sortType.cube) {
   <ion-input
     label-placement="floating"
-    label="Количество в упаковке"
+    label="Высота (см)"
     fill="outline"
-    [(ngModel)]="piecesPerPackage"
+    [(ngModel)]="height"
     type="number"
-    (ionChange)="calculatePackages()"/>
+    (ngModelChange)="calculatePackages()"/>
+    <br>
+  }
+
+  <div class="item">
+    <ion-input
+      label-placement="floating"
+      label="Количество в одной пачке"
+      fill="outline"
+      [(ngModel)]="piecesPerPackage"
+      type="number"
+      (ngModelChange)="calculatePackages()"/>
+    <ion-button (click)="piecesPerPackage = 6; calculatePackages()"  color="danger">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+
   <br>
-  <ion-item>
-    <ion-label>Пакеты</ion-label>
-    <ion-note slot="end">{{ packagesNeeded }}</ion-note>
-  </ion-item>
-  <ion-item>
-    <ion-label>Осталось (шт)</ion-label>
-    <ion-note slot="end">{{ remainingFloorboards }}</ion-note>
-  </ion-item>
+
+  <div class="item">
+    <ion-input
+      label-placement="floating"
+      label="Цена за квадрат"
+      fill="outline"
+      [(ngModel)]="price"
+      type="number"/>
+    <ion-button (click)="price = 0; calculatePackages()"  color="danger">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+    <br>
+    <ion-label>Итого:</ion-label>
+
+    {{ packagesNeeded }} {{ type === sortType.square ? 'пачка' : 'шт' }}
+
+    @if (remainingFloorboards) {
+    и {{ remainingFloorboards }} шт
+    }
+    =
+
+    <b> {{ amount | number:'.0-2' }} {{ type === sortType.cube ? 'куб' : 'м2' }}</b> <br> <br>
+  <ion-label>Сумма:</ion-label>
+  <b> {{ amount * price | number:'.0-2' }} сомони.</b>
 </ion-content>

@@ -8,8 +8,18 @@
     padding: 5px;
     border: 1px solid #b3b3b3;
     cursor: pointer;
-    width: 30px;
     text-align: center;
     border-radius: 4px;
   }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+b {
+  font-size: 20px;
+  line-height: 20px;
 }
